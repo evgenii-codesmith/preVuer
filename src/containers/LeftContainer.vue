@@ -9,6 +9,7 @@
       @keyup.enter="addComponent" 
       :value="currentText"
     />
+    
     <button @click="addComponent">submit</button>
     <component-list />
   </div>
@@ -25,7 +26,6 @@
     methods: {
       addComponent(e) {
         this.$store.dispatch('addComponent');
-        this.$store.dispatch('drawBox');
       },
       updateText(e) {
         e.preventDefault();

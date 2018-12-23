@@ -15,12 +15,11 @@ export const store = new Vuex.Store({
       title: null,
       parentId: null,
       childrenIds: [],
-      position: {
-        x: 110,
-        y: 120,
-        height: 50,
-        width: 50
-      },
+      x: 400,
+      y: 400,
+      height: 300,
+      width: 400,
+      //fill: 'blue',
       stroke: 'black',
       strokeWidth: 4,
       draggable: true,
@@ -40,11 +39,6 @@ export const store = new Vuex.Store({
     UPDATE_TEXT : (state, payload) => {
       state.currentText = payload
     },
-    // ADD_COMPONENT : (state) => {
-    //   state.components.push(state.currentText)
-    //   state.currentText = '';
-    // }
-  
     ADD_COMPONENT : (state) => {
       const formattedTitle = state.currentText
         .replace(/[a-z]+/gi,
@@ -69,21 +63,7 @@ export const store = new Vuex.Store({
         }
       })
       state.components.splice(target, 1)
-      console.log(state.components)  
     },
-    DRAW_BOX : (state) => {
-      let rect2 = new Konva.Rect({
-        x: 250,
-        y: 100,
-        width: 150,
-        height: 90,
-        fill: 'green',
-        name: 'rect',
-        draggable: true
-      });
-      layer.add(rect2);
-      layer.draw();
-    }
   },
   actions: {
     addComponent({commit}) {
@@ -91,9 +71,6 @@ export const store = new Vuex.Store({
     },
     updateText({commit}, payload) {
       commit('UPDATE_TEXT', payload)
-    },
-    drawBox({commit}) {
-      commit('DRAW_BOX')
     },
     getCurrentText({commit}) {
       commit('GET_CURRENT_TEXT')

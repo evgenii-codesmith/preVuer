@@ -1,4 +1,5 @@
 <template>
+
   <div id="center-canvas">
     <v-stage ref="stage" :config="stageConfig" @mousedown="handleStageMouseDown">
     <v-layer ref="imageLayer">
@@ -14,15 +15,14 @@
         @mouseover="onMouseOver"
         @mouseout="onMouseOut"
       ></v-rect>
-      <v-transformer ref="transformer"></v-transformer>
+
+      <v-transformer ref="transformer" :config="trConfig"></v-transformer>
     </v-layer>
   </v-stage>
   </div>
 </template>
 
 <script>
-
-
 export default {
   name: 'center-canvas',
   data() {
@@ -31,33 +31,10 @@ export default {
         width: window.innerWidth,
         height: window.innerHeight,
       },
-      rectangles: [
-        {
-          name: 'rectangle1',
-          x: 200,
-          y: 200,
-          width: 100,
-          height: 100,
-          fill: 'blue',
-          stroke: 'black',
-          strokeWidth: 4,
-          draggable: true,
-          opacity: 0.3,
-        },
-        {
-          name: 'rectangle2',
-          x: 200,
-          y: 200,
-          width: 200,
-          height: 200,
-          fill: 'blue',
-          stroke: 'yellow',
-          strokeWidth: 10,
-          draggable: true,
-          opacity: 0.3,
-        },
-      ],
-      selectedShapeName: '',
+      trConfig: {
+        rotateEnabled: false,
+      },
+      selectedRectId: '',
       image: null,
     };
   },
@@ -69,9 +46,10 @@ export default {
       document.body.style.cursor = 'default';
     },
     handleStageMouseDown(e) {
+      
       // Clicked on the stage -> Clear Transformer Selection
       if (e.target === e.target.getStage()) {
-        this.selectedShapeName = '';
+        this.selectedRectId = '';
         this.updateTransformer();
         // eslint-disable-next-line no-useless-return
         return;
@@ -83,26 +61,28 @@ export default {
         return;
       }
 
-      // Get clicked Rectangle by its name
-      const name = e.target.name();
-      const rect = this.rectangles.find(el => el.name === name);
+      // Find Clicked Rectangle by its id
+      const id = e.target.id();
+      const rect = this.rectangles.find(el => el.id === id);
+        
       if (rect) {
-        this.selectedShapeName = name;
+        this.selectedRectId = id;
       } else {
-        this.selectedShapeName = '';
+        this.selectedRectId = '';
       }
+
       this.updateTransformer();
     },
     updateTransformer() {
       const transformerNode = this.$refs.transformer.getStage(); // Get transfomer
       const stage = transformerNode.getStage(); // Get stage
-      const { selectedShapeName } = this;
+      const { selectedRectId } = this;
 
-      const selectedNode = stage.findOne('.' + selectedShapeName); // Get selected node
+      const selectedNode = stage.findOne('#' + selectedRectId); // Get selected node
 
       // Do nothing if transfomer already attached to rectangle
-      if (selectedNode === transformerNode.node()) {
-        // eslint-disable-next-line no-useless-return
+      if (selectedNode === transformerNode.node()) { 
+      // eslint-disable-next-line no-useless-return
         return;
       }
 
@@ -115,10 +95,18 @@ export default {
       }
       transformerNode.getLayer().batchDraw();
     },
-  }
+  },
+   computed: {
+     rectangles(){
+       return this.$store.state.components
+     }
+   }
+
 };
+
 </script>
 
 <style>
 
 </style>
+
