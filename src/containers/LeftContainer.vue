@@ -30,7 +30,7 @@
 <script>
   import ComponentList from '../components/LeftContainer/ComponentList.vue';
   
-  const { dialog } = require('electron').remote;
+  //const { dialog } = require('electron').remote;
 
   export default {
     name: 'left-container',
@@ -52,7 +52,7 @@
           buttons: ['Yes', 'Cancel'],
           message: 'Do you want to delete all data?'
         }
-        let response = dialog.showMessageBox(options)
+        //let response = dialog.showMessageBox(options)
         
         if (response === 0) {
           this.$store.dispatch('clearWorkspace');

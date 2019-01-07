@@ -60,7 +60,7 @@
     flex-direction: row;
     justify-content: space-between;
   }
-  #component-details {
+   #component-details {
     display: flex;
     flex-direction: row;
   }
